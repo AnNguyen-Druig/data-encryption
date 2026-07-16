@@ -1,5 +1,6 @@
 package com.devteria.data_encryption_demo.controller;
 
+import com.devteria.data_encryption_demo.dto.LoginParam;
 import com.devteria.data_encryption_demo.dto.ProfileDto;
 import com.devteria.data_encryption_demo.dto.ProfileParam;
 import com.devteria.data_encryption_demo.service.ProfileService;
@@ -21,5 +22,10 @@ public class ProfileController {
     @GetMapping("/users/{id}")
     public ProfileDto get(@PathVariable String id) {
         return profileService.get(id);
+    }
+
+    @PostMapping("/users/login")
+    public boolean login(@RequestBody LoginParam param) {
+        return profileService.login(param);
     }
 }

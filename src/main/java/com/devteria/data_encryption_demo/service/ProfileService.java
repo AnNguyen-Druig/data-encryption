@@ -1,14 +1,17 @@
 package com.devteria.data_encryption_demo.service;
 
+import com.devteria.data_encryption_demo.dto.LoginParam;
 import com.devteria.data_encryption_demo.dto.ProfileDto;
 import com.devteria.data_encryption_demo.dto.ProfileParam;
 import com.devteria.data_encryption_demo.entity.Profile;
 import com.devteria.data_encryption_demo.repository.ProfileRepository;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ProfileService {
     private final ProfileRepository profileRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder(12);
 
     public ProfileService(ProfileRepository profileRepository) {
         this.profileRepository = profileRepository;
@@ -37,5 +40,11 @@ public class ProfileService {
                 profile.getFullName(),
                 profile.getEmail()
         );
+    }
+
+    public boolean login(LoginParam param) {
+        var profile = profileRepository.findByUsername(param.username()).orElseThrow(() -> new RuntimeException("Profile not found"));
+
+        return bCryptPasswordEncoder.matches(param.password(), profile.getPassword());
     }
 }

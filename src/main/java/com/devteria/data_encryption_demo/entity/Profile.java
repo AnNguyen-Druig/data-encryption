@@ -1,5 +1,6 @@
 package com.devteria.data_encryption_demo.entity;
 
+import com.devteria.data_encryption_demo.converter.BCryptConverter;
 import com.devteria.data_encryption_demo.converter.EncryptConverter;
 import jakarta.persistence.*;
 
@@ -10,7 +11,7 @@ public class Profile {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    @Column(name = "username")
+    @Column(name = "username", unique = true)
     private String username;
 
     @Convert(converter = EncryptConverter.class)
@@ -21,7 +22,7 @@ public class Profile {
     @Column(name = "email")
     private String email;
 
-    @Convert(converter = EncryptConverter.class)
+    @Convert(converter = BCryptConverter.class)
     @Column(name = "password")
     private String password;
 
